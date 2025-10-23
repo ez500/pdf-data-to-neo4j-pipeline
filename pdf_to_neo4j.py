@@ -1,10 +1,11 @@
-from llmsherpa.readers import LayoutPDFReader
-from neo4j import GraphDatabase
+import glob
 import hashlib
 import os
-import glob
 from datetime import datetime
+
 from dotenv import load_dotenv
+from llmsherpa.readers import LayoutPDFReader
+from neo4j import GraphDatabase
 
 # Load environment variables
 path = "/home/QA/Neo4j_Stage1/.env"
@@ -20,7 +21,7 @@ NEO4J_DATABASE = "neo4j"
 file_location = '/home/QA/Neo4j_Stage1/PDFs'
 
 # Initialize Neo4j
-def initialiseNeo4j():
+def initialise_neo4j():
     cypher_schema = [
         "CREATE CONSTRAINT sectionKey IF NOT EXISTS FOR (c:Section) REQUIRE (c.key) IS UNIQUE;",
         "CREATE CONSTRAINT chunkKey IF NOT EXISTS FOR (c:Chunk) REQUIRE (c.key) IS UNIQUE;",
@@ -36,7 +37,7 @@ def initialiseNeo4j():
     driver.close()
 
 # Ingest document into Neo4j
-def ingestDocumentNeo4j(doc, doc_location):
+def ingest_document_neo4j(doc, doc_location):
     cypher_pool = [
         "MERGE (d:Document {name: $doc_name_val}) ON CREATE SET d.url = $doc_url_val RETURN d;",
         "MERGE (p:Section {key: $doc_name_val+'|'+$block_idx_val+'|'+$title_hash_val}) ON CREATE SET p.page_idx = $page_idx_val, p.title_hash = $title_hash_val, p.block_idx = $block_idx_val, p.title = $title_val, p.tag = $tag_val, p.level = $level_val RETURN p;",
@@ -66,18 +67,24 @@ def ingestDocumentNeo4j(doc, doc_location):
 
             if sec_tag_val != 'table':
                 cypher = cypher_pool[1]
-                session.run(cypher, page_idx_val=sec_page_idx_val, title_hash_val=sec_title_hash_val, title_val=sec_title_val, tag_val=sec_tag_val, level_val=sec_level_val, block_idx_val=sec_block_idx_val, doc_name_val=doc_name_val)
+                session.run(cypher, page_idx_val=sec_page_idx_val, title_hash_val=sec_title_hash_val,
+                            title_val=sec_title_val, tag_val=sec_tag_val, level_val=sec_level_val,
+                            block_idx_val=sec_block_idx_val, doc_name_val=doc_name_val)
 
                 sec_parent_val = str(sec.parent.to_text())
                 if sec_parent_val == "None":
                     cypher = cypher_pool[2]
-                    session.run(cypher, page_idx_val=sec_page_idx_val, title_hash_val=sec_title_hash_val, doc_name_val=doc_name_val, block_idx_val=sec_block_idx_val)
+                    session.run(cypher, page_idx_val=sec_page_idx_val, title_hash_val=sec_title_hash_val,
+                                doc_name_val=doc_name_val, block_idx_val=sec_block_idx_val)
                 else:
                     sec_parent_title_hash_val = hashlib.md5(sec_parent_val.encode("utf-8")).hexdigest()
                     sec_parent_page_idx_val = sec.parent.page_idx
                     sec_parent_block_idx_val = sec.parent.block_idx
                     cypher = cypher_pool[3]
-                    session.run(cypher, page_idx_val=sec_page_idx_val, title_hash_val=sec_title_hash_val, block_idx_val=sec_block_idx_val, parent_page_idx_val=sec_parent_page_idx_val, parent_title_hash_val=sec_parent_title_hash_val, parent_block_idx_val=sec_parent_block_idx_val, doc_name_val=doc_name_val)
+                    session.run(cypher, page_idx_val=sec_page_idx_val, title_hash_val=sec_title_hash_val,
+                                block_idx_val=sec_block_idx_val, parent_page_idx_val=sec_parent_page_idx_val,
+                                parent_title_hash_val=sec_parent_title_hash_val,
+                                parent_block_idx_val=sec_parent_block_idx_val, doc_name_val=doc_name_val)
 
         for chk in doc.chunks():
             chunk_block_idx_val = chk.block_idx
@@ -89,7 +96,9 @@ def ingestDocumentNeo4j(doc, doc_location):
             if chunk_tag_val != 'table':
                 chunk_sentences_hash_val = hashlib.md5(chunk_sentences.encode("utf-8")).hexdigest()
                 cypher = cypher_pool[4]
-                session.run(cypher, sentences_hash_val=chunk_sentences_hash_val, sentences_val=chunk_sentences, block_idx_val=chunk_block_idx_val, page_idx_val=chunk_page_idx_val, tag_val=chunk_tag_val, level_val=chunk_level_val, doc_name_val=doc_name_val)
+                session.run(cypher, sentences_hash_val=chunk_sentences_hash_val, sentences_val=chunk_sentences,
+                            block_idx_val=chunk_block_idx_val, page_idx_val=chunk_page_idx_val, tag_val=chunk_tag_val,
+                            level_val=chunk_level_val, doc_name_val=doc_name_val)
 
                 chk_parent_val = str(chk.parent.to_text())
                 if chk_parent_val != "None":
@@ -97,7 +106,9 @@ def ingestDocumentNeo4j(doc, doc_location):
                     chk_parent_page_idx_val = chk.parent.page_idx
                     chk_parent_block_idx_val = chk.parent.block_idx
                     cypher = cypher_pool[5]
-                    session.run(cypher, sentences_hash_val=chunk_sentences_hash_val, block_idx_val=chunk_block_idx_val, parent_hash_val=chk_parent_hash_val, parent_block_idx_val=chk_parent_block_idx_val, doc_name_val=doc_name_val)
+                    session.run(cypher, sentences_hash_val=chunk_sentences_hash_val, block_idx_val=chunk_block_idx_val,
+                                parent_hash_val=chk_parent_hash_val, parent_block_idx_val=chk_parent_block_idx_val,
+                                doc_name_val=doc_name_val)
 
         for tb in doc.tables():
             page_idx_val = tb.page_idx
@@ -106,7 +117,8 @@ def ingestDocumentNeo4j(doc, doc_location):
             html_val = tb.to_html()
             rows_val = len(tb.rows)
             cypher = cypher_pool[6]
-            session.run(cypher, block_idx_val=block_idx_val, page_idx_val=page_idx_val, name_val=name_val, html_val=html_val, rows_val=rows_val, doc_name_val=doc_name_val)
+            session.run(cypher, block_idx_val=block_idx_val, page_idx_val=page_idx_val, name_val=name_val,
+                        html_val=html_val, rows_val=rows_val, doc_name_val=doc_name_val)
 
             table_parent_val = str(tb.parent.to_text())
             if table_parent_val != "None":
@@ -114,7 +126,9 @@ def ingestDocumentNeo4j(doc, doc_location):
                 table_parent_page_idx_val = tb.parent.page_idx
                 table_parent_block_idx_val = tb.parent.block_idx
                 cypher = cypher_pool[7]
-                session.run(cypher, name_val=name_val, block_idx_val=block_idx_val, parent_page_idx_val=table_parent_page_idx_val, parent_hash_val=table_parent_hash_val, parent_block_idx_val=table_parent_block_idx_val, doc_name_val=doc_name_val)
+                session.run(cypher, name_val=name_val, block_idx_val=block_idx_val,
+                            parent_page_idx_val=table_parent_page_idx_val, parent_hash_val=table_parent_hash_val,
+                            parent_block_idx_val=table_parent_block_idx_val, doc_name_val=doc_name_val)
             else:
                 cypher = cypher_pool[8]
                 session.run(cypher, name_val=name_val, block_idx_val=block_idx_val, doc_name_val=doc_name_val)
@@ -127,21 +141,21 @@ def ingestDocumentNeo4j(doc, doc_location):
     driver.close()
 
 # Parse PDFs and ingest into Neo4j
-def parseAndIngestPDFs():
+def parse_and_ingest_pdfs():
     pdf_files = glob.glob(file_location + '/*.pdf')
     print(f'#PDF files found: {len(pdf_files)}!')
 
     pdf_reader = LayoutPDFReader("https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all")
 
-    startTime = datetime.now()
+    start_time = datetime.now()
 
     for pdf_file in pdf_files:
         doc = pdf_reader.read_pdf(pdf_file)
-        ingestDocumentNeo4j(doc, pdf_file)
+        ingest_document_neo4j(doc, pdf_file)
 
-    print(f'Total time: {datetime.now() - startTime}')
+    print(f'Total time: {datetime.now() - start_time}')
 
 
 if __name__ == '__main__':
-    initialiseNeo4j()
-    parseAndIngestPDFs()
+    initialise_neo4j()
+    parse_and_ingest_pdfs()
