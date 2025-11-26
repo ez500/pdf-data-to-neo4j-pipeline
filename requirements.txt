@@ -1,10 +1,12 @@
-llmsherpa~=0.1.4
+en_core_web_sm~=3.8.0
 google~=3.0.0
 google-genai~=1.52.0
+llmsherpa~=0.1.4
 protobuf~=6.33.1
 PyPDF2~=3.0.1
-en_core_web_sm~=3.8.0
+neo4j~=6.0.3
 pandas~=2.3.3
 pdfplumber~=0.11.8
+python-dotenv~=1.2.1
 spacy~=3.8.11
 textacy~=0.13.0

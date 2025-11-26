@@ -110,9 +110,9 @@ def main():
     # docs on how to start the server up: https://github.com/nlmatics/nlm-ingestor#
     pdf_reader = LayoutPDFReader("http://localhost:5010/api/parseDocument?renderFormat=all")
 
-    path = "sample.pdf"
-    path_tables = "sample-tables.pdf"
-    path_test = "Test_paper.pdf"
+    path = "context/sample.pdf"
+    path_tables = "context/sample-tables.pdf"
+    path_test = "context/Test_paper.pdf"
 
     entities, relations, triples = ingest_pdfs_llmsherpa(
         [(pdf_reader.read_pdf(path_test), path_test)], nlp)

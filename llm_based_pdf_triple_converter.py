@@ -8,7 +8,7 @@ from google.genai import types
 def main():
     client = genai.Client(api_key="AIzaSyCxNumlNs-xAtdbys5j0a2f9OXa2q8Ayrs")
 
-    pdf_path = pathlib.Path('Test_paper.pdf')
+    pdf_path = pathlib.Path('context/Test_paper.pdf')
 
     response = client.models.generate_content(
         model="gemini-2.5-flash",
@@ -17,8 +17,8 @@ def main():
                 data=pdf_path.read_bytes(),
                 mime_type="application/pdf",
             ),
-            "Extract relevant triples from the given PDF. In your response, only include lines in the format 'subject "
-            "| relation | object', one triple per line."
+            "Extract relevant triples from the given PDF. In your response, the first line has to be 'subject | "
+            "relation | object' with succeeding lines in the format 'subject | relation | object', one triple per line."
         ]
     )
 
