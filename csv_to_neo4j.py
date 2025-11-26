@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from neo4j import GraphDatabase
 
 # Load environment variables
+# TODO FIGURE OUT NEO4J DATA & DIRECTORY STRUCTURE
 env_var = "/home/Neo4j/.env"
 load_dotenv(env_var)
 
@@ -16,8 +17,8 @@ NEO4J_USER = "neo4j"
 NEO4J_PASSWORD = os.environ["NEO4J_PASSWORD"]
 NEO4J_DATABASE = "fox_knowledge_graph"
 
-# File location for CSVs
-file_location = './out'
+# Location of CSVs directory
+csv_directory = 'out'
 
 
 # Utility functions to create nodes/relationships in the Neo4j database
@@ -63,7 +64,7 @@ def ingest_csv_neo4j(csv_file):
 
 # Parse PDFs and ingest into Neo4j
 if __name__ == '__main__':
-    csv_files = glob.glob(file_location + '/*.csv')
+    csv_files = glob.glob(csv_directory + '/*.csv')
     print(f'{len(csv_files)} CSVs found')
 
     start_time = datetime.now()

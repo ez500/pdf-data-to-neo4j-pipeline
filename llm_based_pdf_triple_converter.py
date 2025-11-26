@@ -1,20 +1,23 @@
 import csv
+import glob
 import pathlib
 
 from google import genai
 from google.genai import types
+from PyPDF2 import PdfMerger
 
 
-def main():
+pdf_directory = "context"
+
+
+def convert_pdf_to_triples(pdf_file):
     client = genai.Client(api_key="AIzaSyCxNumlNs-xAtdbys5j0a2f9OXa2q8Ayrs")
-
-    pdf_path = pathlib.Path('context/Test_paper.pdf')
 
     response = client.models.generate_content(
         model="gemini-2.5-flash",
         contents=[
             types.Part.from_bytes(
-                data=pdf_path.read_bytes(),
+                data=pdf_file.read_bytes(),
                 mime_type="application/pdf",
             ),
             "Extract relevant triples from the given PDF. In your response, the first line has to be 'subject | "
@@ -22,7 +25,6 @@ def main():
         ]
     )
 
-    print(response.text)
     with open('out/triples_llm.csv', 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         for line in response.text.splitlines():
@@ -30,6 +32,17 @@ def main():
             if len(parts) == 3:
                 writer.writerow(parts)
 
+    print("Triples written to out/triples_llm.csv:")
+    print(response.text)
+
 
 if __name__ == "__main__":
-    main()
+    pdf_files = glob.glob(pdf_directory + '/*.pdf')
+    merger = PdfMerger()
+
+    for file in pdf_files:
+        merger.append(file)
+
+    merger.write('context/concatenated.pdf')
+
+    convert_pdf_to_triples(pathlib.Path('context/concatenated.pdf'))
