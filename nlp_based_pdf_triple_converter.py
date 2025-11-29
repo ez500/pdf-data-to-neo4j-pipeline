@@ -111,7 +111,7 @@ def main():
     pdf_reader = LayoutPDFReader("http://localhost:5010/api/parseDocument?renderFormat=all")
 
     path = "context/old/sample.pdf"
-    path_tables = "context/old/sample-tables.pdf"
+    path_tables = "context/sample-tables.pdf"
     path_test = "context/Test_paper.pdf"
 
     entities, relations, triples = ingest_pdfs_llmsherpa(

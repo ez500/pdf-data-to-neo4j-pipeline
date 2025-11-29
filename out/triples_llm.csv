@@ -1,67 +1,36 @@
 subject,relation,object
-Diabetes,is a,serious global health problem
-Diabetes,involves,body not producing insulin properly
-Diabetes,involves,body not using insulin properly
-Glucagon-like peptide-1 (GLP-1),is a type of,gut polypeptide
-Glucagon-like peptide-1,is secreted in response to,food intake
-Glucagon-like peptide-1,is a type of,potent incretin hormone
-Glucagon-like peptide-1,enhances,glucose-dependent secretion of insulin
-Insulin,is secreted from,pancreatic beta cells
-Free fatty acids (FFAs),provide,an important energy source
-Free fatty acids (FFAs),act as,signaling molecules
-Free fatty acids (FFAs),affect,secretion of gut incretin peptides
-GPR120,is a type of,orphan G-protein-coupled receptor
-GPR120,was isolated from,human genomic DNA fragment
-Gpr120 mRNA,is abundantly expressed in,mouse intestinal tract
-Gpr120 mRNA,is abundantly expressed in,human intestinal tract
-Gpr120 mRNA,is abundantly expressed in,mouse intestinal endocrine cell line STC-1
-Gpr120 mRNA,was not detected in,NCI-H716
-Gpr120 mRNA,was not detected in,CaCo-2
-Gpr120 mRNA,was not detected in,HT29
-Gpr120 mRNA,was not detected in,IEC-6
-Gpr120 mRNA,was not detected in,IEC-18
-Gpr120 mRNA,was not detected in,Intestine 407
-Gpr120 mRNA,was not detected in,pancreatic beta-cell line MIN6
-Long-chain FFAs,function as,endogenous ligands for Gpr120
-Long-chain FFAs,evoke,specific internalization of Gpr120-EGFP conjugate
-Long-chain FFAs,evoke,specific rise in intracellular Ca2+ ([Ca2+]i)
-Saturated FFAs (C14 to C18),show,stimulatory activities for [Ca2+]i response
-Unsaturated FFAs (C16 to C22),show,stimulatory activities for [Ca2+]i response
-FFA-mediated internalization of Gpr120,is blocked by,1% bovine serum albumin (BSA)
-[Ca2+]i response evoked by long-chain FFAs,is inhibited by,BSA at concentrations higher than 0.1%
-Palmitoleic acid,increased,phosphorylated extracellular signal-regulated kinase (ERK) (p44/42)
-α-linolenic acid,increased,phosphorylated extracellular signal-regulated kinase (ERK) (p44/42)
-Docosa-hexaenoic acid,increased,phosphorylated extracellular signal-regulated kinase (ERK) (p44/42)
-Linolenic acid methyl ester,did not show,stimulatory activity on ERK phosphorylation
-Carboxyl group,is indispensable for,Gpr120 function
-Gpr120,functions as a,specific receptor for long-chain FFAs
-FFAs,stimulate,"release of incretin peptide hormones (e.g., cholecystokinin, GLP-1)"
-STC-1,is a type of,mouse enteroendocrine cell line
-STC-1,is used as a model for,secretion of gut peptide hormones
-Unsaturated long-chain FFAs,showed,dose-dependent stimulatory effect on GLP-1 secretion from STC-1 cells
-α-linolenic acid,had the most potency on,GLP-1 secretion from STC-1 cells
-α-linolenic acid-induced GLP-1 secretion from STC-1 cells,was significantly inhibited by,BSA treatment
-α-linolenic acid-induced GLP-1 secretion from STC-1 cells,was significantly inhibited by,Ca2+-free medium
-Gpr120 mRNA,is abundantly expressed in,STC-1 cells
-MIN6 cells,express,Gpr40 abundantly
-STC-1 cells,express,Gpr120
-STC-1 cells,express,Gpr40
-α-linolenic acid,provoked,a rapid rise in [Ca2+]i in STC-1 cells
-Increase in [Ca2+]i induced by α-linolenic acid,was eliminated by,siRNA specific for mouse Gpr120
-Gpr120-specific siRNA,reduced,Gpr120 mRNA expression by about 20% in STC-1 cells
-Gpr120-specific siRNA,significantly reduced,α-linolenic acid-induced GLP-1 secretion from STC-1 cells
-FFA-induced [Ca2+]i increase in STC-1 cells,is mediated through,Gpr120
-GLP-1 secretion in STC-1 cells,is mediated through,Gpr120
-NCI-H716,is a type of,human intestinal cell line
-NCI-H716,expresses,gene encoding proglucagon
-NCI-H716,secretes,GLP-1 in a regulated manner
-NCI-H716 cells,gained ability to secrete GLP-1 in response to α-linolenic acid upon,GPR120 transfection
-GPR120 mRNA,is colocalized with,GLP-1 in human colonic intraepithelial neuroendocrine cells
-GPR120 mRNA,is markedly abundantly expressed in,GLP-1-positive cells in human colon
-Oral administration of α-linolenic acid,significantly increased,plasma GLP-1 concentrations in mice
-Oral administration of α-linolenic acid,significantly increased,plasma insulin concentrations in mice
-Stearic acid oral administration,was less effective at inducing,GLP-1 secretion in vivo
-Octanoic acid oral administration,was less effective at inducing,GLP-1 secretion in vivo
-GPR120-mediated GLP-1 secretion induced by dietary FFAs,is important in,treatment of diabetes
-GPR120,represents a promising new target for,treatment of obesity
-GPR120,represents a promising new target for,treatment of other eating disorders
+Free fatty acids,regulate,gut incretin glucagon-like peptide-1 secretion
+GLP-1,enhances,glucose-dependent secretion of insulin
+Free fatty acids,promote,secretion of gut incretin peptides
+GPR120,acts as a receptor for,unsaturated long-chain FFAs
+FFAs,stimulate,GPR120
+Stimulation of GPR120 by FFAs,promotes,secretion of GLP-1
+Stimulation of GPR120 by FFAs,increases,circulating insulin
+Dietary FFAs,induce,GPR120-mediated GLP-1 secretion
+BSA,binds,FFAs
+Long-chain FFAs,evoke,rise in intracellular Ca2+
+BSA,inhibits,Ca2+ response evoked by long-chain FFAs
+Palmitoleic acid,increases,phosphorylated ERK
+a-linolenic acid,increases,phosphorylated ERK
+Docosa-hexaenoic acid,increases,phosphorylated ERK
+Linolenic acid methyl ester,does not stimulate,GPR120 activity
+FFAs,stimulate,release of cholecystokinin
+Unsaturated long-chain FFAs,stimulate,GLP-1 secretion
+a-linolenic acid,stimulates,GLP-1 secretion most potently
+BSA,inhibits,a-linolenic acid-induced GLP-1 secretion
+FFAs,activate,ERK
+FFAs,are ligands for,Gpr40
+a-linolenic acid,provokes,rise in intracellular Ca2+
+Gpr120,mediates,FFA-induced Ca2+ increase
+Gpr120,mediates,FFA-induced GLP-1 secretion
+Palmitoleic acid,induces,GLP-1 secretion
+DHA,induces,GLP-1 secretion
+Oleic acid,induces,GLP-1 secretion
+Stearic acid,weakly induces,GLP-1 secretion
+Octanoic acid,weakly induces,GLP-1 secretion
+a-linolenic acid methyl ester,does not induce,GLP-1 secretion
+a-linolenic acid,increases,plasma GLP-1
+a-linolenic acid,increases,plasma insulin
+FFAs,activate,GPR40
+GPR40,promotes,glucose-stimulated insulin secretion
+GPR120,indirectly promotes,glucose-stimulated insulin secretion
