@@ -72,14 +72,28 @@ def convert_pdf_figures_to_contextualized_description(merged_pdf_file):
 
         if result.text is not None and result.text.strip().lower() == 'irrelevant image':
             print(f"Image at {image_path} deemed irrelevant to the PDF content. Skipping description.")
-            # Delete the image/figure directory
-            os.remove(image_path)
-            os.rmdir(Path(image_path).parent)
             continue
 
         with open(Path(image_path).parent / 'description', 'w', newline='', encoding='utf-8') as file:
             file.write(result.text)
             print(f"Description for {image_path} written to {Path(image_path).parent / 'description'}")
+
+
+# Delete the image/figure directory if it does not contain a description file
+def clear_undescribed_folders(output_path):
+    for root, dirs, files in os.walk(output_path):
+        for dir_name in dirs:
+            dir_path = Path(root) / dir_name
+            description_file = dir_path / 'description'
+            if not os.path.isfile(description_file):
+                for item in os.listdir(dir_path):
+                    item_path = dir_path / item
+                    if os.path.isfile(item_path):
+                        os.remove(item_path)
+                    else:
+                        os.rmdir(item_path)
+                os.rmdir(dir_path)
+                print(f"Removed undescribed folder: {dir_path}")
 
 
 if __name__ == "__main__":
@@ -92,5 +106,6 @@ if __name__ == "__main__":
     with open('context/merged/concatenated.pdf', 'wb') as f_out:
         merger.write(f_out)
 
-    # convert_pdf_figures_to_contextualized_description(Path('context/merged/concatenated.pdf'))
-    print(num_figures(Path('context/Nano-11 _ 2.pdf')))
+    convert_pdf_figures_to_contextualized_description(Path('context/merged/concatenated.pdf'))
+    clear_undescribed_folders(Path('out/figures'))
+    # print(num_figures(Path('context/Nano-11 _ 2.pdf')))

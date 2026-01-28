@@ -19,7 +19,10 @@ def fitz_extract_images_from_pdf(pdf_path):
             base_image = doc.extract_image(xref)
             image_bytes = base_image["image"]
             image_ext = base_image["ext"]
-            os.mkdir(f"out/figures/page{page_num+1}_{img_index+1}")
+            try:
+                os.mkdir(f"out/figures/page{page_num+1}_{img_index+1}")
+            except FileExistsError:
+                pass
             image_filename = f"out/figures/page{page_num+1}_{img_index+1}/page{page_num+1}_{img_index+1}.{image_ext}"
             image_paths.append(image_filename)
 
