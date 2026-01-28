@@ -1,3 +1,4 @@
+pillow
 fitz
 en_core_web_sm~=3.8.0
 google~=3.0.0
