@@ -29,10 +29,6 @@ def num_figures(pdf):
     return result.text
 
 
-# TODO Prompt with PDF for context, iterate prompt for each asset, format with integrated context (paper citation?),
-#  output into a subdirectory within figure directory for each figure containing the original exported figure
-#  as well as the raw description.
-
 def convert_pdf_figures_to_contextualized_description(merged_pdf_file):
     client = genai.Client(api_key="AIzaSyCxNumlNs-xAtdbys5j0a2f9OXa2q8Ayrs")
 
@@ -54,27 +50,35 @@ def convert_pdf_figures_to_contextualized_description(merged_pdf_file):
                 ),
                 img,
                 """
-                The Big Idea: Summarize the image using the context of the PDF provided. Guidelines are as follows:\n
-                1. Contextual Relevance: Ensure the description ties back to the main themes and findings of the PDF.
-                2. Clarity and Conciseness: Provide a clear and concise summary of what the image represents. Take into
-                account the caption that is associated with the figure in the PDF.
-                3. Key Elements: Highlight significant features, data points, or trends possibly shown in the image.
-                4. Avoid Redundancy: Do not repeat information that is already clearly stated
-                in the PDF unless it is crucial for understanding the image.
-                5. Scientific Rigor: Maintain accuracy and scientific integrity in the description.
-                Provide the description in a single paragraph.
-                6. Format: Output only the description text without any additional commentary or formatting.
-                7. Length: Keep it concise, ideally between 50 and 100 words.
-                8. IMPORTANT: If the image is not relevant to the content of the PDF, respond with 'irrelevant image'.
+                This task has two parts:\n\n
+                1. You must first determine if the attached image is relevant to the content matter and research topic 
+                of the PDF by locating the asset on the provided PDF and analyzing surrounding
+                context/captions/equations. If the image is deemed irrelevant, respond with 'The attached image is 
+                irrelevant' and skip the second part. Do not proceed to the second part and summarize another figure in 
+                the PDF if the given image is irrelevant.\n\n
+                2. Summarize the attached image using the provided PDF as context. Guidelines are as follows:\n
+                1. Format: Start your response with "The attached image...". Output only the description text without
+                any additional commentary or formatting.\n
+                2. Contextual Relevance: Ensure the summary of the attached image ties back to the main themes and 
+                findings of the provided PDF. Connect adjacent/contextual equations to the explanation of the image.\n
+                3. Clarity and Conciseness: Provide a clear and concise summary of what the image represents. Take into 
+                account the caption that is associated with the figure in the PDF.\n
+                4. Key Elements: Highlight significant features, data points, or trends possibly shown in the image.\n
+                5. Avoid Redundancy: Do not repeat information that is already clearly stated 
+                in the PDF unless it is crucial for understanding the image.\n
+                6. Scientific Rigor: Maintain accuracy and scientific integrity in the description.\n
+                7. Length: Keep it concise, ideally between 50 and 100 words. Provide the description in a single 
+                paragraph.\n
                 """
             ]
         )
 
-        if result.text is not None and result.text.strip().lower() == 'irrelevant image':
+        if result.text is not None and ('The attached image is irrelevant' in result.text.strip()):
             print(f"Image at {image_path} deemed irrelevant to the PDF content. Skipping description.")
             continue
 
-        with open(Path(image_path).parent / 'description', 'w', newline='', encoding='utf-8') as file:
+        with (open(Path(image_path).parent / f'description-{Path(image_path).stem}', 'w', newline='', encoding='utf-8')
+              as file):
             file.write(result.text)
             print(f"Description for {image_path} written to {Path(image_path).parent / 'description'}")
 
@@ -84,7 +88,7 @@ def clear_undescribed_folders(output_path):
     for root, dirs, files in os.walk(output_path):
         for dir_name in dirs:
             dir_path = Path(root) / dir_name
-            description_file = dir_path / 'description'
+            description_file = dir_path / f'description-{dir_name}'
             if not os.path.isfile(description_file):
                 for item in os.listdir(dir_path):
                     item_path = dir_path / item
@@ -107,5 +111,5 @@ if __name__ == "__main__":
         merger.write(f_out)
 
     convert_pdf_figures_to_contextualized_description(Path('context/merged/concatenated.pdf'))
-    clear_undescribed_folders(Path('out/figures'))
+    # clear_undescribed_folders(Path('out/figures'))
     # print(num_figures(Path('context/Nano-11 _ 2.pdf')))

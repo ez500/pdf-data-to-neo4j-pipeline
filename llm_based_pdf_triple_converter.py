@@ -28,7 +28,7 @@ def convert_pdf_to_triples(merged_pdf_file):
         ]
     )
 
-    with open('out/triples_llm.csv', 'w', newline='', encoding='utf-8') as file:
+    with open('out/old/triples_outputs/triples_llm.csv', 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         for line in response.text.splitlines():
             parts = [part.strip() for part in line.split('|')]
