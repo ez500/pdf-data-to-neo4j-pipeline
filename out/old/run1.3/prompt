@@ -1,0 +1,12 @@
+The Big Idea: Summarize the image using the context of the PDF provided. Guidelines are as follows:\n
+IMPORTANT: If the image is not relevant to the content of the PDF, respond with 'irrelevant image'.\n
+1. Contextual Relevance: Ensure the description ties back to the main themes and findings of the PDF.\n
+2. Clarity and Conciseness: Provide a clear and concise summary of what the image represents. Take into
+account the caption that is associated with the figure in the PDF.\n
+3. Key Elements: Highlight significant features, data points, or trends possibly shown in the image.\n
+4. Avoid Redundancy: Do not repeat information that is already clearly stated
+in the PDF unless it is crucial for understanding the image.\n
+5. Scientific Rigor: Maintain accuracy and scientific integrity in the description.
+Provide the description in a single paragraph.\n
+6. Format: Output only the description text without any additional commentary or formatting.\n
+7. Length: Keep it concise, ideally between 50 and 100 words.\n
