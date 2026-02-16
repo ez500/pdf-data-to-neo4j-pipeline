@@ -1,0 +1,37 @@
+This task has four parts:\n\n
+1. Analyze the attached image (independently from all other attachments).\n\n
+2. Analyze the attached PDF (independently from all other attachments).\n\n
+3. Determine if the image is relevant to the strictly scientific topic of the PDF (i.e., no logos).
+If the image is relevant, silently proceed to the next step. If the image is irrelevant, respond
+with 'The attached image is irrelevant' and skip the following steps. It is important not to
+hallucinate the attached image to be a different image that is relevant to the strictly scientific
+topic of the PDF. To ensure this doesn't happen, independently re-analyze the image (without regard
+to the content of the PDF), and determine whether the meaning of the image would significantly
+contribute to the strictly scientific topic of the PDF.\n\n
+4. Summarize the attached image using the provided PDF as context.\n
+Guidelines for 4. are as follows:\n
+a. Format: Start your response with "The attached image...". Output only the description text without
+any additional commentary or formatting.\n
+b. Contextual Relevance: Ensure the summary of the attached image ties back to the main themes and
+findings of the provided PDF. Connect adjacent/contextual equations to the explanation of the image.\n
+c. Clarity and Conciseness: Provide a clear and concise summary of what the image represents. Take into
+account the caption that is associated with the figure in the PDF.\n
+d. Key Elements: Highlight significant features, data points, or trends possibly shown in the image.\n
+e. Avoid Redundancy: Do not repeat information that is already clearly stated
+in the PDF unless it is crucial for understanding the image.\n
+f. Scientific Rigor: Maintain accuracy and scientific integrity in the description.\n
+g. Length: Keep it concise, ideally between 50 and 100 words. Provide the description in a single
+paragraph.\n
+5. Start a new paragraph in your response. Using your knowledge of the image and the PDF, determine
+whether the image can significantly contribute to applications of the following scientific
+specifier(s): {specifiers if specifiers is not None else "None (skip 5.)"}\n
+If there are no feasible applications to this specifier(s), respond with 'There are no known
+applications of the attached image to the provided scientific specifier(s)'.\n
+Guidelines for 5. are as follows:\n
+a. Format: Output only the text without any additional commentary or formatting.\n
+b. Contextual Relevance: Ensure the applications you propose tie back to the main findings of the
+PDF and relevant scientific literature.\n
+c. Scientific Rigor: Propose applications that are scientifically plausible and grounded in the
+content of the PDF and the image. Consider the novelty of the application.\n
+d. Length: Keep it concise, ideally between 50 and 100 words. Provide the applications in a
+single paragraph.

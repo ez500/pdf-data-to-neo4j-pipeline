@@ -29,7 +29,7 @@ def num_figures(pdf):
     return result.text
 
 
-def convert_pdf_figures_to_contextualized_description(merged_pdf_file):
+def convert_pdf_figures_to_contextualized_description(merged_pdf_file, specifiers=None):
     client = genai.Client(api_key="AIzaSyCxNumlNs-xAtdbys5j0a2f9OXa2q8Ayrs")
 
     image_paths = pdf_figures_extraction.fitz_extract_images_from_pdf(merged_pdf_file)
@@ -41,6 +41,8 @@ def convert_pdf_figures_to_contextualized_description(merged_pdf_file):
             print("Image file not found:", image_path)
             continue
 
+        # TODO RUN 4: ACCURACY IN PARSING (LARGE-SCALE PDF ANALYSIS VS. VECTOR-BASED ANALYSIS)
+
         result = client.models.generate_content(
             model="gemini-2.5-flash",
             contents=[
@@ -49,7 +51,7 @@ def convert_pdf_figures_to_contextualized_description(merged_pdf_file):
                     mime_type="application/pdf",
                 ),
                 img,
-                """
+                f"""
                 This task has four parts:\n\n
                 1. Analyze the attached image (independently from all other attachments).\n\n
                 2. Analyze the attached PDF (independently from all other attachments).\n\n
@@ -60,7 +62,8 @@ def convert_pdf_figures_to_contextualized_description(merged_pdf_file):
                 topic of the PDF. To ensure this doesn't happen, independently re-analyze the image (without regard 
                 to the content of the PDF), and determine whether the meaning of the image would significantly 
                 contribute to the strictly scientific topic of the PDF.\n\n
-                4. Summarize the attached image using the provided PDF as context. Guidelines are as follows:\n
+                4. Summarize the attached image using the provided PDF as context.\n
+                Guidelines for 4. are as follows:\n
                 a. Format: Start your response with "The attached image...". Output only the description text without 
                 any additional commentary or formatting.\n
                 b. Contextual Relevance: Ensure the summary of the attached image ties back to the main themes and 
@@ -73,6 +76,19 @@ def convert_pdf_figures_to_contextualized_description(merged_pdf_file):
                 f. Scientific Rigor: Maintain accuracy and scientific integrity in the description.\n
                 g. Length: Keep it concise, ideally between 50 and 100 words. Provide the description in a single 
                 paragraph.\n
+                5. Start a new paragraph in your response. Using your knowledge of the image and the PDF, determine 
+                whether the image can significantly contribute to applications of the following scientific 
+                specifier(s): {specifiers if specifiers is not None else "None (skip 5. entirely)"}\n
+                If there are no feasible applications to this specifier(s), respond with 'There are no known 
+                applications of the attached image to the provided scientific specifier(s)'.\n
+                Guidelines for 5. are as follows:\n
+                a. Format: Output only the text without any additional commentary or formatting.\n
+                b. Contextual Relevance: Ensure the applications you propose tie back to the main findings of the 
+                PDF and relevant scientific literature.\n
+                c. Scientific Rigor: Propose applications that are scientifically plausible and grounded in the 
+                content of the PDF and the image. Consider the novelty of the application.\n
+                d. Length: Keep it concise, ideally between 50 and 100 words. Provide the applications in a 
+                single paragraph.
                 """
             ]
         )
@@ -114,6 +130,10 @@ if __name__ == "__main__":
     with open('context/merged/concatenated.pdf', 'wb') as f_out:
         merger.write(f_out)
 
-    convert_pdf_figures_to_contextualized_description(Path('context/merged/concatenated.pdf'))
+    specifiers = input("Enter scientific specifier(s) for application "
+                       "analysis (comma-separated, or leave blank to skip): ")
+
+    convert_pdf_figures_to_contextualized_description(Path('context/merged/concatenated.pdf'),
+                                                      specifiers=specifiers.strip() if specifiers.strip() else None)
     # clear_undescribed_folders(Path('out/figures'))
     # print(num_figures(Path('context/Nano-11 _ 2.pdf')))
