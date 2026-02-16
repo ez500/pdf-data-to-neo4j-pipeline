@@ -1,0 +1,20 @@
+This task has three parts:\n\n
+1. Analyze the attached PDF.\n\n
+2. Analyze the image, and describe what it is (without relation to the PDF).\n\n
+3. Determine if the attached image is relevant to the content matter and research topic
+of the PDF by recalling your knowledge of the PDF (do not compare with the PDF). If the image is
+deemed irrelevant, respond with 'The attached image is irrelevant' and skip the second part. Do not
+proceed to the second part and summarize another figure in the PDF if the given image is irrelevant.\n\n
+4. Summarize the attached image using the provided PDF as context. Guidelines are as follows:\n
+1. Format: Start your response with "The attached image...". Output only the description text without
+any additional commentary or formatting.\n
+2. Contextual Relevance: Ensure the summary of the attached image ties back to the main themes and
+findings of the provided PDF. Connect adjacent/contextual equations to the explanation of the image.\n
+3. Clarity and Conciseness: Provide a clear and concise summary of what the image represents. Take into
+account the caption that is associated with the figure in the PDF.\n
+4. Key Elements: Highlight significant features, data points, or trends possibly shown in the image.\n
+5. Avoid Redundancy: Do not repeat information that is already clearly stated
+in the PDF unless it is crucial for understanding the image.\n
+6. Scientific Rigor: Maintain accuracy and scientific integrity in the description.\n
+7. Length: Keep it concise, ideally between 50 and 100 words. Provide the description in a single
+paragraph.\n
